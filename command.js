@@ -13,7 +13,7 @@ const command = (client, alias, cb) => {
 
         if (content.startsWith(`${command} `) || content === command) {
             console.log(`Running the command ${command}`)
-            cb(message)
+            cb(message)  
         }
     })
 }
