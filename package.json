@@ -1,0 +1,28 @@
+{
+  "name": "macarons-djs-bot",
+  "version": "1.0.0",
+  "description": "Discord bot whose primary purpose is to be a menace to society",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js --exec babel-node -e js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoang-phan98/macarons-djs-bot.git"
+  },
+  "author": "macarons",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoang-phan98/macarons-djs-bot/issues"
+  },
+  "homepage": "https://github.com/hoang-phan98/macarons-djs-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
