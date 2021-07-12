@@ -22,23 +22,24 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
             let newUserChannel = newMember.channel
             let oldUserChannel = oldMember.channel
 
+            // Victim joins a new channel
             if (!oldUserChannel && newUserChannel) {
                 newUserChannel.join();
+
+            // Victim disconnects from the channel
             } else if (!newUserChannel) {
-                console.log("REACHED")
                 const guildId = oldMember.guild.id;
-                const clientVoiceConnection = await client.guilds.fetch(guildId).then( (guild) => guild.voice )
+                const clientVoiceConnection = await client.guilds.fetch(guildId).then((guild) => guild.voice)
+
+                // If bot is currently connected to a voice channel
                 if (clientVoiceConnection) {
-                    console.log(clientVoiceConnection)
                     clientVoiceConnection.channel.leave()
                 }
             }
 
-        } else {
-            return
-        }
-    } else {
-        return
+            // TODO: Get the bot to follow victims across different channels
+
+        } 
     }
 })
 
