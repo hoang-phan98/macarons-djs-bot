@@ -1,11 +1,14 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import { Client } from 'discord.js';
 import command from './command';
+import { audio } from "./config.json";
 
 dotenv.config();
 
 const client = new Client()
 var victim
+var dispatcher
 
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in!`)
@@ -45,7 +48,38 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
 
             // TODO: Get the bot to follow victims across different channels
 
-        } 
+        }
+    }
+})
+
+client.on('guildMemberSpeaking', (member, speaking) => {
+    if (victim) {
+        if (victim.id === member.id) {
+            const clientVoiceConnection = client.voice.connections.first()
+            // Check if victim is speaking
+            if (speaking.bitfield === 1) {
+                // Play audio here
+                console.log("Speaking")
+                if (clientVoiceConnection) {
+                    if (dispatcher) {
+                        dispatcher.resume()
+                        dispatcher.on('finish', () => {
+                            console.log("Finished")
+                            dispatcher = undefined
+                        })
+                    } else {
+                        dispatcher = clientVoiceConnection.play(path.join(__dirname, audio))
+                    }
+                }
+            } else if (speaking.bitfield === 0) {
+                // Stop audio here
+                console.log("Stopped")
+                if (dispatcher) {
+                    dispatcher.pause();
+                }
+
+            }
+        }
     }
 })
 
