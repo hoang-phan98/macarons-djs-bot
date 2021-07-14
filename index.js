@@ -24,7 +24,7 @@ client.on('ready', () => {
         axios.get('https://www.reddit.com/r/memes/.json')
             .then((res)=>{
                 // Random number
-                let number = Math.floor(Math.random() * 27)
+                let number = Math.floor(Math.random() * res.data.data.children.length)
 
                 //Create the embed message
                 const embed = new Discord.MessageEmbed()
