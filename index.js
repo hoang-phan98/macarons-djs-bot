@@ -1,9 +1,10 @@
+
 import dotenv from 'dotenv';
 import path from 'path';
 import axios from 'axios';
 import Discord, { Client } from 'discord.js';
 import command from './command';
-import { audio } from "./config.json";
+import { audio, annoyingMessages, emojiList } from "./config.json";
 
 dotenv.config();
 
@@ -27,9 +28,33 @@ const removeRole = (member) => {
     }
 }
 
-client.on('ready', () => {
-    console.log(`${client.user.tag} has logged in!`)
+client.on("ready", () => {
+  console.log(`${client.user.tag} has logged in!`);
 
+
+client.on("message", (message) => {
+  if (victim) {
+    if (message.author.bot == true) return;
+
+    if (victim.id !== message.author.id) return;
+
+    // Send an annoying message
+    var messageContent;
+    if (message) {
+      messageContent =
+        annoyingMessages[Math.floor(Math.random() * annoyingMessages.length)];
+    }
+    message.reply(messageContent);
+
+    // React to a message with a unicode emoji
+    var emojirandom;
+
+    if (message) {
+      emojirandom = emojiList[Math.floor(Math.random() * emojiList.length)];
+      message.react(emojirandom);
+    }
+  }
+});
     command(client, 'annoy', (message) => {
         victim = message.mentions.users.first()
 
@@ -186,6 +211,7 @@ client.on('guildMemberSpeaking', (member, speaking) => {
             }
         }
     }
-})
+  }
+});
 
 client.login(process.env.DISCORD_TOKEN);
