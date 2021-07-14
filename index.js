@@ -29,30 +29,6 @@ const removeRole = (member) => {
 
 client.on("ready", () => {
   console.log(`${client.user.tag} has logged in!`);
-
-  client.on("message", (message) => {
-    if (victim) {
-      if (message.author.bot == true) return;
-
-      if (victim.id !== message.author.id) return;
-
-      // Send an annoying message
-      var messageContent;
-      if (message) {
-        messageContent =
-          annoyingMessages[Math.floor(Math.random() * annoyingMessages.length)];
-      }
-      message.reply(messageContent);
-
-      // React to a message with a unicode emoji
-      var emojirandom;
-
-      if (message) {
-        emojirandom = emojiList[Math.floor(Math.random() * emojiList.length)];
-        message.react(emojirandom);
-      }
-    }
-  });
   command(client, "annoy", (message) => {
     victim = message.mentions.users.first();
 
@@ -73,7 +49,7 @@ client.on("ready", () => {
 
       //Create the embed message
       const embed = new Discord.MessageEmbed()
-        .setTitle("Here is the meme of the day!")
+        .setTitle("Here is a random meme!")
         .setImage(res.data.data.children[number].data.url);
 
       //Send message to the chat
@@ -207,6 +183,30 @@ client.on("guildMemberSpeaking", (member, speaking) => {
           dispatcher.pause();
         }
       }
+    }
+  }
+});
+
+client.on("message", (message) => {
+  if (victim) {
+    if (message.author.bot == true) return;
+
+    if (victim.id !== message.author.id) return;
+
+    // Send an annoying message
+    var messageContent;
+    if (message) {
+      messageContent =
+        annoyingMessages[Math.floor(Math.random() * annoyingMessages.length)];
+    }
+    message.reply(messageContent);
+
+    // React to a message with a unicode emoji
+    var emojirandom;
+
+    if (message) {
+      emojirandom = emojiList[Math.floor(Math.random() * emojiList.length)];
+      message.react(emojirandom);
     }
   }
 });
