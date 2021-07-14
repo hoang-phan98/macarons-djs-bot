@@ -29,18 +29,39 @@ const removeRole = (member) => {
 
 client.on("ready", () => {
   console.log(`${client.user.tag} has logged in!`);
+
   command(client, "annoy", (message) => {
+    const { member } = message
+
+    if (!member.hasPermission("ADMINISTRATOR")) {
+      channel.send("You do not have permission to run this command.");
+      return;
+    }
+
     victim = message.mentions.users.first();
 
     // join the same voice channel as the victim
-    const member = message.guild.members.cache.get(victim.id);
-    const channel = member.voice.channel;
+    const victimMember = message.guild.members.cache.get(victim.id);
+    const channel = victimMember.voice.channel;
     if (channel) {
       channel.join();
     }
   });
 
-  //Meme of the day
+  command(client, "mercy", (message) => {
+    const { member, guild } = message
+    if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
+      message.channel.send("You do not have permission to use this command")
+      return
+    } else {
+      victim = undefined
+      const clientVoiceConnection = guild.voice
+      if (clientVoiceConnection) {
+        clientVoiceConnection.channel.leave();
+      }
+    }
+  })
+
   command(client, "meme", (message) => {
     // Get the meme
     axios.get("https://www.reddit.com/r/memes/.json").then((res) => {
