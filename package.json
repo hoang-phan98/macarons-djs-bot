@@ -24,9 +24,7 @@
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "nodemon": "^2.0.12",
-    "opusscript": "0.0.8"
-  },
-  "devDependencies": {
+    "opusscript": "0.0.8",
     "babel-preset-env": "^1.7.0"
   }
 }
