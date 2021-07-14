@@ -1,5 +1,6 @@
 {
     "prefix": "!",
     "annoyingMessages": ["shut up no one cares", "so what", "HAHAHAHAHA...ok","do you think ur funny?", "STOP...please"],
-    "emojiList": ["🥳","🥺","🤓","🥸","😈","🤬","😘","💩"]
+    "emojiList": ["🥳","🥺","🤓","🥸","😈","🤬","😘","💩"],
+    "audio": "monkey_noises.m4a"
 }
