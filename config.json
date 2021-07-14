@@ -1,3 +1,5 @@
 {
-    "prefix": "!"
+    "prefix": "!",
+    "annoyingMessages": ["shut up no one cares", "so what", "HAHAHAHAHA...ok","do you think ur funny?", "STOP...please"],
+    "emojiList": ["🥳","🥺","🤓","🥸","😈","🤬","😘","💩"]
 }
