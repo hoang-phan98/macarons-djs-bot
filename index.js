@@ -12,6 +12,12 @@ client.on('ready', () => {
 
     command(client, 'annoy', (message) => {
         victim = message.mentions.users.first()
+        console.log(message.guild.members.cache.get(victim.id))
+        const member = message.guild.members.cache.get(victim.id)
+        const channel = member.voice.channel
+        if (channel) {
+            channel.join()
+        }
     })
 })
 
@@ -19,15 +25,15 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
     if (victim) {
         // Check if the member is the same as the victim
         if (victim.id === oldMember.member.id) {
+            
             let newUserChannel = newMember.channel
-            let oldUserChannel = oldMember.channel
 
             // Victim joins a new channel
-            if (!oldUserChannel && newUserChannel) {
+            if (newUserChannel) {
                 newUserChannel.join();
 
             // Victim disconnects from the channel
-            } else if (!newUserChannel) {
+            } else {
                 const guildId = oldMember.guild.id;
                 const clientVoiceConnection = await client.guilds.fetch(guildId).then((guild) => guild.voice)
 
