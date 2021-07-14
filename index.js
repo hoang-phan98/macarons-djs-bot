@@ -11,19 +11,23 @@ const client = new Client();
 var victim;
 var dispatcher;
 
-const giveRole = (member) => {
+const giveRole = (member, channel) => {
   const role = member.guild.roles.cache.find((role) => role.name === "Muted");
   if (role) {
     member.roles.add(role);
     console.log("Muted " + member.id);
+  } else {
+    channel.send("Cannot find a Muted role on this server")
   }
 };
 
-const removeRole = (member) => {
+const removeRole = (member, channel) => {
   const role = member.guild.roles.cache.find((role) => role.name === "Muted");
   if (role) {
     member.roles.remove(role);
     console.log("Unmuted " + member.id);
+  } else {
+    channel.send("Cannot find a Muted role on this server")
   }
 };
 
@@ -107,7 +111,7 @@ client.on("ready", () => {
     } else {
       const targetMember = guild.members.cache.get(target.id);
       console.log(targetMember);
-      giveRole(targetMember);
+      giveRole(targetMember, message.channel);
       channel.send("Muted " + target.tag);
     }
   });
@@ -140,7 +144,7 @@ client.on("ready", () => {
     } else {
       const targetMember = guild.members.cache.get(target.id);
       console.log(targetMember);
-      removeRole(targetMember);
+      removeRole(targetMember, message.channel);
       channel.send("Unmuted " + target.tag);
     }
   });
