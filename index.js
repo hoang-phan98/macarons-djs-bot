@@ -33,7 +33,7 @@ client.on("ready", () => {
   command(client, "annoy", (message) => {
     const { member } = message
 
-    if (!member.hasPermission("ADMINISTRATOR")) {
+    if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
       channel.send("You do not have permission to run this command.");
       return;
     }
