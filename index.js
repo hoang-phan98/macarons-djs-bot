@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { Client, MessageAttachment } from 'discord.js';
 import path from 'path';
 import { Client } from 'discord.js';
 import command from './command';
@@ -9,6 +10,10 @@ dotenv.config();
 const client = new Client()
 var victim
 var dispatcher
+
+// Meme API, need to install axios
+const axios = require('axios');
+const Discord = require('discord.js');
 
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in!`)
@@ -21,6 +26,24 @@ client.on('ready', () => {
         if (channel) {
             channel.join()
         }
+    })
+
+    //Meme of the day
+    command(client, 'meme', (message) => {
+        // Get the meme
+        axios.get('https://www.reddit.com/r/memes/.json')
+            .then((res)=>{
+                // Random number
+                let number = Math.floor(Math.random() * res.data.data.children.length)
+
+                //Create the embed message
+                const embed = new Discord.MessageEmbed()
+                .setTitle('Here is the meme of the day!')
+                .setImage(res.data.data.children[number].data.url)
+                
+                //Send message to the chat
+                message.channel.send(embed)
+            })
     })
 })
 
