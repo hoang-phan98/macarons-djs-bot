@@ -7,11 +7,95 @@ dotenv.config();
 const client = new Client()
 var victim
 
+const giveRole = (member) => {
+    const role = member.guild.roles.cache.find((role) => role.name === 'Muted')
+    if (role) {
+        member.roles.add(role)
+        console.log('Muted ' + member.id)
+    } 
+}
+
+const removeRole = (member) => {
+    const role = member.guild.roles.cache.find((role) => role.name === 'Muted')
+    if (role) {
+        member.roles.remove(role)
+        console.log('Unmuted ' + member.id)
+    }
+}
+
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in!`)
 
     command(client, 'annoy', (message) => {
         victim = message.mentions.users.first()
+    })
+
+    command(client, 'mute', message => {
+        //!mute @user
+        const { member, channel, content, mentions } = message
+        const { guild } = member 
+
+        //Check if bot has permission
+        if(!member.hasPermission('ADMINISTRATOR')) {
+            channel.send('You do not have permission to run this command.')
+            return
+        }
+        
+        //Split the command
+        const split = content.trim().split(' ')
+        console.log(split)
+        
+        //Check if command tags a user
+        if (split.length !==2 ) {
+            channel.send('Please mention a user to mute.')
+            return
+        }
+        
+        const target = mentions.users.first()
+
+        if(!target) {
+            channel.send('User not found.')
+            return
+        } else {
+            const targetMember = guild.members.cache.get(target.id)
+            console.log(targetMember)
+            giveRole(targetMember)
+            channel.send('Muted ' + target.tag)
+        }
+        
+    })
+
+    command(client, 'unmute', message => {
+        const { member, channel, content, mentions } = message
+        const { guild } = member 
+
+        //Check if bot has permission
+        if(!member.hasPermission('ADMINISTRATOR')) {
+            channel.send('You do not have permission to run this command.')
+            return
+        }
+        
+        //Split the command
+        const split = content.trim().split(' ')
+        console.log(split)
+        
+        //Check if command tags a user
+        if (split.length !==2 ) {
+            channel.send('Please mention a user to unmute.')
+            return
+        }
+
+        const target = mentions.users.first()
+
+        if(!target) {
+            channel.send('User not found.')
+            return
+        } else {
+            const targetMember = guild.members.cache.get(target.id)
+            console.log(targetMember)
+            removeRole(targetMember)
+            channel.send('Unmuted ' + target.tag)
+        }
     })
 })
 
