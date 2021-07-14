@@ -158,7 +158,7 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
         // Check if the member is the same as the victim
         if (victim.id === oldMember.member.id) {
 
-            let ewUserChannel = newMember.channel
+            let newUserChannel = newMember.channel
 
             // Victim joins a new channel
             if (newUserChannel) {
