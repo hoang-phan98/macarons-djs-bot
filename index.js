@@ -53,6 +53,7 @@ client.on("ready", () => {
   });
 
   command(client, "mercy", (message) => {
+    if (!victim) return;
     const { member, guild } = message
     if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
       message.channel.send("You do not have permission to use this command")
