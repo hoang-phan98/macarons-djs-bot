@@ -36,15 +36,19 @@ client.on("ready", () => {
 
   command(client, "annoy", (message) => {
     const { member } = message
+
+    if (victim) {
+      if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
+        message.channel.send("You do not have permission to run this command.");
+        return;
+      }
+    }
+
     victim = message.mentions.users.first();
+
     if (!victim) {
       message.channel.send("Please specify a user")
       return
-    }
-
-    if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
-      message.channel.send("You do not have permission to run this command.");
-      return;
     }
 
     // join the same voice channel as the victim
