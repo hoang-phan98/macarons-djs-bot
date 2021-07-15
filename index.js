@@ -11,36 +11,61 @@ const client = new Client();
 var victim;
 var dispatcher;
 
-const giveRole = (member) => {
+const giveRole = (member, channel) => {
   const role = member.guild.roles.cache.find((role) => role.name === "Muted");
   if (role) {
     member.roles.add(role);
     console.log("Muted " + member.id);
+  } else {
+    channel.send("Cannot find a Muted role on this server")
   }
 };
 
-const removeRole = (member) => {
+const removeRole = (member, channel) => {
   const role = member.guild.roles.cache.find((role) => role.name === "Muted");
   if (role) {
     member.roles.remove(role);
     console.log("Unmuted " + member.id);
+  } else {
+    channel.send("Cannot find a Muted role on this server")
   }
 };
 
 client.on("ready", () => {
   console.log(`${client.user.tag} has logged in!`);
+
   command(client, "annoy", (message) => {
+    const { member } = message
+
+    if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
+      channel.send("You do not have permission to run this command.");
+      return;
+    }
+
     victim = message.mentions.users.first();
 
     // join the same voice channel as the victim
-    const member = message.guild.members.cache.get(victim.id);
-    const channel = member.voice.channel;
+    const victimMember = message.guild.members.cache.get(victim.id);
+    const channel = victimMember.voice.channel;
     if (channel) {
       channel.join();
     }
   });
 
-  //Meme of the day
+  command(client, "mercy", (message) => {
+    const { member, guild } = message
+    if (member.id === victim.id || !member.hasPermission("ADMINISTRATOR")) {
+      message.channel.send("You do not have permission to use this command")
+      return
+    } else {
+      victim = undefined
+      const clientVoiceConnection = guild.voice
+      if (clientVoiceConnection) {
+        clientVoiceConnection.channel.leave();
+      }
+    }
+  })
+
   command(client, "meme", (message) => {
     // Get the meme
     axios.get("https://www.reddit.com/r/memes/.json").then((res) => {
@@ -86,7 +111,7 @@ client.on("ready", () => {
     } else {
       const targetMember = guild.members.cache.get(target.id);
       console.log(targetMember);
-      giveRole(targetMember);
+      giveRole(targetMember, message.channel);
       channel.send("Muted " + target.tag);
     }
   });
@@ -119,7 +144,7 @@ client.on("ready", () => {
     } else {
       const targetMember = guild.members.cache.get(target.id);
       console.log(targetMember);
-      removeRole(targetMember);
+      removeRole(targetMember, message.channel);
       channel.send("Unmuted " + target.tag);
     }
   });
